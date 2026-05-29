@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply font-sans text-text-primary antialiased bg-white;
+  }
+
+  ::selection {
+    @apply bg-pink-primary/20 text-text-primary;
+  }
+}
+
+@layer components {
+  .section-padding {
+    @apply py-20 md:py-28 px-5 md:px-8;
+  }
+
+  .container-content {
+    @apply max-w-content mx-auto w-full;
+  }
+}
+
+@layer utilities {
+  .perspective-\[1200px\] {
+    perspective: 1200px;
+  }
+}
