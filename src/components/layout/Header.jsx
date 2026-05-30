@@ -18,62 +18,80 @@ export default function Header() {
   return (
     <header
       className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
+        'fixed top-0 left-0 right-0 z-50 transition-all duration-500',
         scrolled
-          ? 'bg-white/80 backdrop-blur-xl shadow-glass border-b border-gray-100/80 py-3'
-          : 'bg-transparent py-5',
+          ? 'bg-white/70 backdrop-blur-2xl shadow-glass border-b border-white/50 py-3'
+          : 'bg-transparent py-5 lg:py-6',
       )}
     >
-      <div className="container-content flex items-center justify-between gap-4 px-5 md:px-8">
-        <Link to="/" className="flex items-center gap-2 group" aria-label="Pink Auto home">
-          <span className="w-9 h-9 rounded-xl bg-pink-primary flex items-center justify-center text-white font-bold text-sm shadow-card">
+      <div className="container-content flex items-center justify-between gap-4">
+        <Link to="/" className="flex items-center gap-3 group" aria-label="Pink Auto home">
+          <motion.div 
+            whileHover={{ rotate: 10, scale: 1.1 }}
+            className="w-10 h-10 rounded-2xl bg-gradient-to-br from-pink-primary to-pink-deep flex items-center justify-center text-white font-black text-sm shadow-glow"
+          >
             PA
-          </span>
-          <span className="font-bold text-lg text-text-primary group-hover:text-pink-primary transition-colors">
+          </motion.div>
+          <span className="font-extrabold text-xl tracking-tight text-gray-900 group-hover:text-pink-primary transition-colors duration-300">
             Pink Auto
           </span>
         </Link>
 
-        <nav className="hidden xl:flex items-center gap-6" aria-label="Main navigation">
-          {primaryNav.map((link) => (
-            <Link
-              key={link.path}
-              to={link.path}
-              className={cn(
-                'text-sm font-medium transition-colors',
-                pathname === link.path ? 'text-pink-primary' : 'text-text-secondary hover:text-text-primary',
-              )}
-            >
-              {link.label}
-            </Link>
-          ))}
+        {/* Desktop Navigation */}
+        <nav className="hidden xl:flex items-center gap-1 bg-white/40 backdrop-blur-md rounded-full px-2 py-1 shadow-sm border border-white/60" aria-label="Main navigation">
+          {primaryNav.map((link) => {
+            const isActive = pathname === link.path
+            return (
+              <Link
+                key={link.path}
+                to={link.path}
+                className={cn(
+                  'relative px-5 py-2 font-semibold text-sm transition-all duration-300 rounded-full',
+                  isActive ? 'text-white' : 'text-gray-600 hover:text-gray-900 hover:bg-white/60'
+                )}
+              >
+                {isActive && (
+                  <motion.div
+                    layoutId="header-active-nav"
+                    className="absolute inset-0 bg-pink-primary rounded-full -z-10 shadow-md"
+                    initial={false}
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
+                {link.label}
+              </Link>
+            )
+          })}
         </nav>
 
-        <div className="hidden lg:flex items-center gap-3">
+        <div className="hidden lg:flex items-center gap-4">
           <a
             href={playStoreUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm font-semibold text-pink-primary hover:text-pink-primary/80 transition-colors px-2"
+            className="text-sm font-bold text-gray-600 hover:text-pink-primary transition-colors px-2"
           >
             Get App
           </a>
-          <Button to="/book" variant="secondary" size="sm">
+          <Button to="/book" variant="secondary" size="md" className="rounded-full">
             Book Now
           </Button>
-          <Button to="/driver-registration" size="sm">
+          <Button to="/driver-registration" size="md" className="shadow-glow">
             Become Driver
           </Button>
         </div>
 
+        {/* Mobile menu trigger */}
         <button
           type="button"
-          className="lg:hidden p-2 rounded-lg hover:bg-gray-100"
+          className="lg:hidden relative z-50 p-2.5 rounded-full bg-white shadow-sm border border-gray-100 text-gray-900 hover:bg-gray-50 flex items-center justify-center transition-transform active:scale-95"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={mobileOpen}
         >
-          {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+          <motion.div animate={{ rotate: mobileOpen ? 180 : 0 }}>
+            {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+          </motion.div>
         </button>
       </div>
 
